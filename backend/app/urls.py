@@ -3,11 +3,19 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('users/<str:token>/', views.UserDetailsView.as_view(), name='users_view'),
-    path('heroes/', views.HeroesView.as_view(), name='heores_view'),
+    path('users/get/<int:user_id>', views.UsersView.as_view({'get': 'get'}), name='users_get_view'),
+    path('users/list/', views.UsersView.as_view({'get': 'list'}), name='users_list_view'),
+    path('users/create/', views.UsersView.as_view({'post': 'create_new_user'}), name='users_create_view'),
+
+    path('heroes/get/<int:hero_id>/', views.HeroesView.as_view({'get': 'get'}), name='heroes_get_view'),
+    path('heroes/filter/<int:hero_id>/', views.HeroesView.as_view({'get': 'filter'}), name='heroes_filter_view'),
+    path('heroes/delete/<int:hero_id>/', views.HeroesView.as_view({'delete': 'delete'}), name='heroes_delete_view'),
+    path('heroes/list/', views.HeroesView.as_view({'get': 'list'}), name='heroes_list_view'),
+    path('heroes/upsert/', views.HeroesView.as_view({'post': 'post'}), name='heroes_upsert_view'),
+
     path('groups/get/<int:group_id>/', views.GroupsView.as_view({'get': 'get'}), name='groups_get_view'),
     path('groups/delete/<int:group_id>/', views.GroupsView.as_view({'delete': 'delete'}), name='groups_delete_view'),
     path('groups/list/', views.GroupsView.as_view({'get': 'list'}), name='groups_list_view'),
-    path('groups/upsert/<int:group_id>/', views.GroupsView.as_view({'post': 'post'}), name='groups_upsert_view')
+    path('groups/upsert/', views.GroupsView.as_view({'post': 'post'}), name='groups_upsert_view')
 ]
 

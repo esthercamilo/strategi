@@ -8,7 +8,7 @@ class Group(models.Model):
 
 
 class Hero(models.Model):
-    heroe_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=200)
+    hero_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=200, null=True)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
 
