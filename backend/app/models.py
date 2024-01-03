@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Group(models.Model):
     group_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
 
 
 class Hero(models.Model):
