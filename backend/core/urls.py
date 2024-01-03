@@ -5,9 +5,8 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Documentação de API",
+        title="API documentation - Marvel heroes management",
         default_version='v1',
-        description="API para agrupamento de heróis Marvel",
         contact=openapi.Contact(email="esthercamilo@gmail.com"),
     ),
     public=True,

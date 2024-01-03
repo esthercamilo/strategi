@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+  web_prod:
+    environment:
+      DEBUG: 0
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000 --log-level info --timeout 120 --workers 2 --threads 4
+    volumes:
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
+
+  frontend:
+      build:
+        context: ./frontend
+        dockerfile: ./Dockerfile
+
+  nginx_prod:
+    build: ./nginx
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: gntech
+      DEBUG: 0
+    volumes:
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
+    ports:
+      - 9092:80
+    depends_on:
+      - web_prod
+      - frontend
+
+volumes:
+  static_volume:
+  media_volume:

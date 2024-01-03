@@ -48,6 +48,7 @@ class Command(BaseCommand):
                 if offset > total:
                     break
                 offset += 20
+                break  # for tests purposes
 
         except Exception as e:
             self.stdout.write(self.style.ERROR(f'Error to update data from Marvel API: {e}'))

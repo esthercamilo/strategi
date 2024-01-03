@@ -1,3 +1,4 @@
+from app.views import update_marvel_heroes_endpoint
 from . import views
 from django.urls import path
 
@@ -12,10 +13,12 @@ urlpatterns = [
     path('heroes/delete/<int:hero_id>/', views.HeroesView.as_view({'delete': 'delete'}), name='heroes_delete_view'),
     path('heroes/list/', views.HeroesView.as_view({'get': 'list'}), name='heroes_list_view'),
     path('heroes/upsert/', views.HeroesView.as_view({'post': 'post'}), name='heroes_upsert_view'),
+    path('heroes/populate/', update_marvel_heroes_endpoint, name='populate_heroes_view'),
 
     path('groups/get/<int:group_id>/', views.GroupsView.as_view({'get': 'get'}), name='groups_get_view'),
     path('groups/delete/<int:group_id>/', views.GroupsView.as_view({'delete': 'delete'}), name='groups_delete_view'),
     path('groups/list/', views.GroupsView.as_view({'get': 'list'}), name='groups_list_view'),
     path('groups/upsert/', views.GroupsView.as_view({'post': 'post'}), name='groups_upsert_view')
+
 ]
 

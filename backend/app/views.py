@@ -1,21 +1,17 @@
-import copy
+import subprocess
 
-from django.db.models import Q
-from django.shortcuts import render
-from django.contrib.auth import get_user_model
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from drf_yasg import openapi
-from rest_framework import viewsets
-from django.core.exceptions import ObjectDoesNotExist
-from django.forms.models import model_to_dict
-from rest_framework.response import Response
-from rest_framework import views
-from django.http import JsonResponse
-from rest_framework import status
-from drf_yasg.utils import swagger_auto_schema
-from app.models import Hero, Group
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from app.models import Hero, Group
 from app.serializers import HeroSerializer, GroupSerializer, UserSerializer
 
 
@@ -208,3 +204,14 @@ class GroupsView(viewsets.ViewSet):
             return Response({"response": "Object deleted"}, status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist:
             return Response({"response": "Object does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@swagger_auto_schema(methods=['get'], operation_id="Populate heroes from official Marvel website", tags=['Heroes'])
+@api_view(['GET'])
+def update_marvel_heroes_endpoint(request):
+    try:
+        subprocess.run(['python3', 'manage.py', 'update_marvel_heroes'], check=True)
+        return JsonResponse({'message': 'Comando update_marvel_heroes executado com sucesso'})
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({'message': f'Erro ao executar o comando: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+

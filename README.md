@@ -1,9 +1,9 @@
-# Projeto Heróis Marvel
+# Projeto Heróis Marvel \[PT\]
 
 Este é um projeto que combina Next.js no frontend e Django no backend para criar uma aplicação web moderna
 para o gerenciamento de Heróis Marvel em grupos.
 
-## Descrição
+## Requisitos
 
 O objetivo da aplicação é o agrupamento de heróis Marvel conforme as seguintes regras:
 
@@ -14,82 +14,51 @@ O objetivo da aplicação é o agrupamento de heróis Marvel conforme as seguint
    grupo. Tudo isso no formato `ant` design.
 
 
-## Informações técnicas
+## Informações técnicas \[backend\]
 
-O backend foi construído utilizando Django Rest framework
+O backend foi construído utilizando Django Rest Framework. Essa abordagem é crucial para agilizar o desenvolvimento
+de APIs no Django, oferecendo ferramentas integradas para serialização de dados, autenticação, autorização e validação.
 
+Como banco de dados, foi utilizado SQLite. Essa opção é default do Django e foi motivada por simplicidade. A 
+flexibilidade oferecida pelo Django para a troca de banco de dados também foi levada em consideração.
 
+A documentação foi gerada automaticamente utilizando a biblioteca drf-yasg (Swagger - OpenAPI).
+Esta ferramenta simplifica a documentação, oferecendo uma interface interativa e legível,
+permitindo que desenvolvedores visualizem e compreendam facilmente os endpoints, métodos,
+parâmetros, respostas e outras informações essenciais da API.
 
+A implantação desta aplicação foi realizada por meio do Docker Compose, usando três serviços principais:
 
-O projeto utiliza a capacidade do Next.js para renderização de páginas dinâmicas e interativas no lado do cliente e servidor,
-juntamente com o robusto framework Django para a lógica do backend e gerenciamento de dados.
+1. Gunicorn: servidor WSGI responsável por executar a aplicação Django;
+2. Nginx: servidor proxy reverso
+3. Frontend: disponibilização das páginas estáticas do frontend
 
-Um único contêiner Docker abrigar tanto o frontend quanto o backend.
-A decisão de começar com um único contêiner foi tomada com base nas necessidades iniciais do projeto,
-buscando simplicidade e facilidade de implantação.
+Optou-se inicialmente por uma única composição, porém containers separados, para abrigar tanto o frontend quanto o backend com base nas 
+necessidades iniciais do projeto, buscando simplicidade e facilidade de implantação. A medida que o projeto evolui 
+e mais membros são necessários essa estrutura deve ser revista. 
 
+A aplicação web backend possui os comandos básicos do Django e também o comando `update_marvel_heroes` que popula
+os heróis a partir do repositório oficial Marvel (https://developer.marvel.com/documentation/authorization)
 
-## Funcionalidades Principais
+```
+python3 manage.py update_marvel_heroes
+```
 
-- **Next.js (Frontend)**
-  - Utiliza a capacidade de SSR e SSG para renderizar páginas de forma eficiente e rápida.
-  - Roteamento dinâmico para criação de interfaces de usuário interativas.
-  - Utilização de API Routes para comunicação com o backend.
+## Utilização
 
-- **Django (Backend)**
-  - Framework robusto em Python para a lógica do servidor e gerenciamento de dados.
-  - ORM poderoso para interagir com bancos de dados e modelos de dados.
-  - Sistema integrado de autenticação e permissões para usuários.
-
-## Como Usar
-
-### Pré-requisitos
-
-- Node.js e npm instalados.
-- Python e Django configurados.
-- Docker e Docker Compose (opcional para a implantação).
+Os detalhes da documentação podem ser encontrados na página Swagger do projeto
 
 ### Instalação
 
-1. **Frontend (Next.js):**
-   ```
-   cd frontend
-   npm install
-   npm run dev
-   ```
+Os pré-requisito para instalação dessa aplicação são:
+1. docker engine (https://docs.docker.com/engine/install/).
+2. docker-compose (https://docs.docker.com/desktop/install/ubuntu/)
 
-2. **Backend (Django):**
-   ```
-   cd backend
-   pip install -r requirements.txt
-   python manage.py runserver
-   ```
+Você pode fazer o build da composição como está habituado. 
 
-## Próximos Passos
+Passos sugeridos (sistema linux):
 
-- Implementar mais funcionalidades no frontend e backend.
-- Melhorar a integração entre o Next.js e o Django.
-- Considerar a separação dos contêineres Docker para escalabilidade futura.
-
-## Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests para melhorias no projeto.
-
-## Autores
-
-- [Seu Nome] - Desenvolvedor(a) - [Seu GitHub]
-
-## Licença
-
-Este projeto está licenciado sob a [Tipo de Licença]. Consulte o arquivo `LICENSE` para mais detalhes.
-
----
-
-Adapte este modelo de README com informações específicas do seu projeto, detalhes de configuração, instruções de instalação e outras seções importantes para sua aplicação.
+`$ docker-compose up --build -d`
 
 
 
-
-
-
-Sinta-se à vontade para adaptar esse texto de acordo com as especificidades do seu projeto e suas preferências.
