@@ -80,8 +80,11 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_WITH_AUTH': True,
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:9092",
 ]
 
 ROOT_URLCONF = 'core.urls'

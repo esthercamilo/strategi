@@ -18,7 +18,7 @@ services:
         - static_volume:/home/app/static
         - media_volume:/home/app/media
       ports:
-        - 9092:80
+        - 8000:80
 
 volumes:
   static_volume:
