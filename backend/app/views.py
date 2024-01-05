@@ -1,5 +1,8 @@
 import subprocess
-
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -9,7 +12,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from app.models import Hero, Group
 from app.serializers import HeroSerializer, GroupSerializer, UserSerializer
@@ -215,3 +218,16 @@ def update_marvel_heroes_endpoint(request):
     except subprocess.CalledProcessError as e:
         return JsonResponse({'message': f'Erro ao executar o comando: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+@swagger_auto_schema(methods=['post'], operation_id="Authenticate user", tags=['Users'], request_body=UserSerializer)
+@api_view(['POST'])
+@permission_classes([AllowAny])  # allow access with no authentication
+def auth(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(username=username, password=password)
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response({'error': 'Invalid credentials'}, status=400)

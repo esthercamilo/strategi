@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/get/<int:user_id>', views.UsersView.as_view({'get': 'get'}), name='users_get_view'),
     path('users/list/', views.UsersView.as_view({'get': 'list'}), name='users_list_view'),
     path('users/create/', views.UsersView.as_view({'post': 'create_new_user'}), name='users_create_view'),
+    path('users/auth/', views.auth, name='users_auth_view'),
 
     path('heroes/get/<int:hero_id>/', views.HeroesView.as_view({'get': 'get'}), name='heroes_get_view'),
     path('heroes/filter/<int:hero_id>/', views.HeroesView.as_view({'get': 'filter'}), name='heroes_filter_view'),
