@@ -1,62 +1,69 @@
-# Projeto Heróis Marvel \[PT\]
+# Marvel Heroes Project [EN]
 
-Este é um projeto que combina Next.js no frontend e Django no backend para criar uma aplicação web moderna
-para o gerenciamento de Heróis Marvel em grupos.
+This is a project that combines Next.js on the frontend and Django on the backend to create a modern web application for managing Marvel Heroes in groups.
 
-## Requisitos
+## Requirements
 
-O objetivo da aplicação é o agrupamento de heróis Marvel conforme as seguintes regras:
+The application aims to organize Marvel heroes based on the following rules:
 
-1. Cada herói deve pertencer a um grupo apenas. 
-2. O grupo é uma propriedade associada ao usuário logado. Se no futuro os grupos forem propriedades absolutas, ou seja,
-   todos os usuários logados tiverem a capacidade de editar um mesmo grupo, a interface de comunicação deverá ser alterada.
-3. A aplicação deve apresentar os heróis sem grupo, um input para escolha do grupo, a possibilidade de cadastro de um novo
-   grupo. Tudo isso no formato `ant` design.
+- Each hero should belong to a single group.
+- The group is a property associated with the logged-in user. If in the future groups become absolute properties, meaning all logged-in users have the capability to edit the same group, the communication interface must be modified accordingly.
+- The application should display heroes without a group, provide an input for choosing a group, and enable the creation of a new group, all in Ant Design format.
 
+## Technical Information [Backend]
+The backend was built using Django Rest Framework. This approach is crucial for expediting API development in Django, providing built-in tools for data serialization, authentication, authorization, and validation.
 
-## Informações técnicas \[backend\]
+SQLite was used as the database, which is the default option in Django, chosen for its simplicity. The flexibility offered by Django for database switching was also taken into consideration.
 
-O backend foi construído utilizando Django Rest Framework. Essa abordagem é crucial para agilizar o desenvolvimento
-de APIs no Django, oferecendo ferramentas integradas para serialização de dados, autenticação, autorização e validação.
+Documentation was automatically generated using the drf-yasg (Swagger - OpenAPI) library. This tool simplifies documentation by offering an interactive and readable interface, allowing developers to easily visualize and understand endpoints, methods, parameters, responses, and other essential API information.
 
-Como banco de dados, foi utilizado SQLite. Essa opção é default do Django e foi motivada por simplicidade. A 
-flexibilidade oferecida pelo Django para a troca de banco de dados também foi levada em consideração.
+Deployment of this application was accomplished through Docker Compose, utilizing three main services:
 
-A documentação foi gerada automaticamente utilizando a biblioteca drf-yasg (Swagger - OpenAPI).
-Esta ferramenta simplifica a documentação, oferecendo uma interface interativa e legível,
-permitindo que desenvolvedores visualizem e compreendam facilmente os endpoints, métodos,
-parâmetros, respostas e outras informações essenciais da API.
+- Gunicorn: a WSGI server responsible for running the Django application.
+- Nginx: a reverse proxy server.
+- Frontend: serving the static frontend pages.
 
-A implantação desta aplicação foi realizada por meio do Docker Compose, usando três serviços principais:
+Initially, a single composition with separate containers was chosen to host both the frontend and backend based on the initial project requirements, aiming for simplicity and ease of deployment. As the project evolves and more members are needed, this structure should be reviewed.
 
-1. Gunicorn: servidor WSGI responsável por executar a aplicação Django;
-2. Nginx: servidor proxy reverso
-3. Frontend: disponibilização das páginas estáticas do frontend
-
-Optou-se inicialmente por uma única composição, porém containers separados, para abrigar tanto o frontend quanto o backend com base nas 
-necessidades iniciais do projeto, buscando simplicidade e facilidade de implantação. A medida que o projeto evolui 
-e mais membros são necessários essa estrutura deve ser revista. 
-
-A aplicação web backend possui os comandos básicos do Django e também o comando `update_marvel_heroes` que popula
-os heróis a partir do repositório oficial Marvel (https://developer.marvel.com/documentation/authorization)
+The backend web application includes basic Django commands and also the `update_marvel_heroes` command, which populates heroes from the official Marvel repository (https://developer.marvel.com/documentation/authorization).
 
 ```
 python3 manage.py update_marvel_heroes
 ```
 
-## Utilização
+### Token-Based Authentication Workflow
 
-Os detalhes da documentação podem ser encontrados na página Swagger do projeto
+Token-based authentication is used to secure access to protected endpoints in an application. This workflow involves the following steps:
 
-### Instalação
+1. **User Login:**
+   - User provides their username and password for authentication.
+   - Backend authenticates the credentials and generates an access token upon successful authentication.
 
-Os pré-requisito para instalação dessa aplicação são:
-1. docker engine (https://docs.docker.com/engine/install/).
-2. docker-compose (https://docs.docker.com/desktop/install/ubuntu/)
+2. **Token Retrieval:**
+   - Upon successful authentication, the backend sends the access token back to the frontend.
+   - The frontend securely stores this token, commonly in `sessionStorage` or `localStorage`.
 
-Você pode fazer o build da composição como está habituado. 
+3. **Subsequent Requests:**
+   - For subsequent requests to protected endpoints, the frontend includes the stored access token in the `Authorization` header of the HTTP request.
+   - The backend validates the token to authorize access to protected resources.
 
-Passos sugeridos (sistema linux):
+Storing the token in `sessionStorage` maintains it only for the current browser session, while `localStorage` persists it across sessions. Proper security measures such as HTTPS implementation and token expiration handling should be considered for secure token management.
+
+This token-based workflow ensures secure access to authenticated resources while allowing seamless user interactions within the application.
+
+## Usage
+
+The documentation details can be found on the Swagger page of the project. The local address can be http://127.0.0.1:8000/api.
+
+### Installation
+
+The prerequisites for installing this application are:
+1. Docker Engine (https://docs.docker.com/engine/install/).
+2. Docker Compose (https://docs.docker.com/desktop/install/ubuntu/)
+
+You can build the composition as you are accustomed to.
+
+Suggested command for Linux systems:
 
 `$ docker-compose up --build -d`
 
